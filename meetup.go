@@ -1,6 +1,11 @@
 package meetup
 
-import "bytes"
+import (
+	"bytes"
+	"encoding/json"
+	"net/http"
+	"time"
+)
 
 const baseURL = "https://api.meetup.com"
 
@@ -8,9 +13,48 @@ const baseURL = "https://api.meetup.com"
 type Clienter interface{}
 
 // Client
-type Client struct{}
+type Client struct {
+	hc *http.Client
+}
+
+// NewClient ...
+func NewClient() Clienter {
+	return &Client{
+		hc: &http.Client{
+			Timeout: time.Duration(time.Second * 20),
+		},
+	}
+}
 
 // call
-func (c *Client) call(method, endpoint string, data *bytes.Buffer, result interface{}) error {
-	return nil
+func (c *Client) call(method, uri string, data *bytes.Buffer, result interface{}) error {
+	var req *http.Request
+	req.Header.Add("", "")
+
+	var err error
+
+	endpoint := baseURL + uri
+
+	switch method {
+	case http.MethodGet:
+		req, err = http.NewRequest(method, endpoint, nil)
+		if err != nil {
+			return err
+		}
+
+	case http.MethodPost:
+		req, err = http.NewRequest(method, endpoint, data)
+		if err != nil {
+			return err
+		}
+	}
+	defer func() { req.Close = true }()
+
+	res, err := c.hc.Do(req)
+	if err != nil {
+		return err
+	}
+	defer res.Body.Close()
+
+	return json.NewDecoder(res.Body).Decode(result)
 }
