@@ -1,9 +1,15 @@
 package meetup
 
 import (
+	"fmt"
 	"net/http"
 	"net/url"
 	"strconv"
+)
+
+const (
+	memberEndpoint  = "/2/member"
+	membersEndpoint = "/2/members"
 )
 
 // Member represents a Meetup group member
@@ -14,6 +20,7 @@ type Member struct {
 	Topics []Interest `json:"topics"`
 }
 
+// Members wraps a slice of Member and also contains meta-fields from the meetup API response
 type Members struct {
 	Members    []Member `json:"results"`
 	TotalCount int      `json:"total_count"`
@@ -28,35 +35,34 @@ type Interest struct {
 }
 
 // Members returns all of the members that belong to the specified meetup group
-func (c *Client) Members(groupID int) (Members, error) {
+func (c *Client) Members(groupID int) (*Members, error) {
 	var members Members
 
-	query := "?group_id=" + strconv.Itoa(groupID) + "&key=" + c.opts.APIKey
-	u, error := url.Parse(query)
-	if error != nil {
-		return Members{}, error
-	}
-	q := u.Query()
-	u.RawQuery = q.Encode()
-	uri := "/2/members?" + u.RawQuery
+	v := url.Values{}
+	v.Set("group_id", strconv.Itoa(groupID))
+	v.Set("key", c.opts.APIKey)
 
-	err := c.call(http.MethodGet, uri, nil, &members)
-	if err != nil {
-		return Members{}, err
+	uri := fmt.Sprintf("%s?%s", membersEndpoint, v.Encode())
+
+	if err := c.call(http.MethodGet, uri, nil, &members); err != nil {
+		return nil, err
 	}
 
-	return members, nil
+	return &members, nil
 }
 
 // Member returns the meetup profile data for a single member
-func (c *Client) Member(memberID int) (Member, error) {
+func (c *Client) Member(memberID int) (*Member, error) {
 	var member Member
 
-	uri := "/2/member/" + strconv.Itoa(memberID) + "?key=" + c.opts.APIKey
-	err := c.call(http.MethodGet, uri, nil, &member)
-	if err != nil {
-		return member, err
+	v := url.Values{}
+	v.Set("key", c.opts.APIKey)
+
+	uri := fmt.Sprintf("%s/%d?%s", memberEndpoint, memberID, v.Encode())
+
+	if err := c.call(http.MethodGet, uri, nil, &member); err != nil {
+		return nil, err
 	}
 
-	return member, nil
+	return &member, nil
 }
