@@ -10,7 +10,10 @@ import (
 const baseURL = "https://api.meetup.com"
 
 // Clienter
-type Clienter interface{}
+type Clienter interface {
+	Members(groupID int) (*Members, error)
+	Member(memberID int) (*Member, error)
+}
 
 type ClientOpts struct {
 	APIKey string
@@ -23,17 +26,13 @@ type Client struct {
 }
 
 // NewClient ...
-func NewClient() *Client {
+func NewClient(opts *ClientOpts) Clienter {
 	return &Client{
 		hc: &http.Client{
 			Timeout: time.Duration(time.Second * 20),
 		},
+		opts: opts,
 	}
-}
-
-// Options configures the client with global details that are provided by the consumer
-func (c *Client) Options(opts *ClientOpts) {
-	c.opts = opts
 }
 
 // call
