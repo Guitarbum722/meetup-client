@@ -12,13 +12,18 @@ const baseURL = "https://api.meetup.com"
 // Clienter
 type Clienter interface{}
 
+type ClientOpts struct {
+	APIKey string
+}
+
 // Client
 type Client struct {
-	hc *http.Client
+	hc   *http.Client
+	opts *ClientOpts
 }
 
 // NewClient ...
-func NewClient() Clienter {
+func NewClient() *Client {
 	return &Client{
 		hc: &http.Client{
 			Timeout: time.Duration(time.Second * 20),
@@ -26,10 +31,15 @@ func NewClient() Clienter {
 	}
 }
 
+// Options configures the client with global details that are provided by the consumer
+func (c *Client) Options(opts *ClientOpts) {
+	c.opts = opts
+}
+
 // call
 func (c *Client) call(method, uri string, data *bytes.Buffer, result interface{}) error {
 	var req *http.Request
-	req.Header.Add("", "")
+	//req.Header.Add("", "")
 
 	var err error
 
