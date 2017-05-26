@@ -8,7 +8,7 @@ import (
 )
 
 func TestMember(t *testing.T) {
-	cl := new(mocks.Clienter)
+	cl := &mocks.Clienter{}
 
 	cl.On("Member", 78).Return(&meetup.Member{
 		Name:   "John M.",
@@ -32,7 +32,7 @@ func TestMember(t *testing.T) {
 }
 
 func TestMembers(t *testing.T) {
-	cl := new(mocks.Clienter)
+	cl := &mocks.Clienter{}
 	cl.On("Members", 999).Return(&meetup.Members{
 		Members: membersCases,
 	},
