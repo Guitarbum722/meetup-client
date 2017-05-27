@@ -4,13 +4,14 @@ import (
 	"github.com/briandowns/meetup-client"
 	"github.com/briandowns/meetup-client/mocks"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 	"testing"
 )
 
 func TestMember(t *testing.T) {
 	cl := &mocks.Clienter{}
 
-	cl.On("Member", 78).Return(&meetup.Member{
+	cl.On("Member", mock.AnythingOfType("int")).Return(&meetup.Member{
 		Name:   "John M.",
 		Status: "active",
 		ID:     78,
@@ -33,7 +34,7 @@ func TestMember(t *testing.T) {
 
 func TestMembers(t *testing.T) {
 	cl := &mocks.Clienter{}
-	cl.On("Members", 999).Return(&meetup.Members{
+	cl.On("Members", mock.AnythingOfType("int")).Return(&meetup.Members{
 		Members: membersCases,
 	},
 		nil,
