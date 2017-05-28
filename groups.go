@@ -13,3 +13,8 @@ func (c *Client) GroupByID(groupID int) (*models.Group, error) {
 func (c *Client) GroupByURLName(urlName string) (*models.Group, error) {
 	return nil, nil
 }
+
+// GroupByOrganizer returns the data for a single meetup group using the specified organizerID
+func (c *Client) GroupByOrganizer(organizerID int) (*models.Group, error) {
+	return nil, nil
+}
