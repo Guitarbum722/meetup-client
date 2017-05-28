@@ -2,6 +2,7 @@ package meetup
 
 import (
 	"fmt"
+	"github.com/briandowns/meetup-client/models"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -14,10 +15,10 @@ const (
 
 // Member represents a Meetup group member
 type Member struct {
-	Name   string     `json:"name"`
-	Status string     `json:"status"`
-	ID     int        `json:"id"`
-	Topics []Interest `json:"topics"`
+	Name   string         `json:"name"`
+	Status string         `json:"status"`
+	ID     int            `json:"id"`
+	Topics []models.Topic `json:"topics"`
 }
 
 // Members wraps a slice of Member and also contains meta-fields from the meetup API response
@@ -25,13 +26,6 @@ type Members struct {
 	Members    []Member `json:"results"`
 	TotalCount int      `json:"total_count"`
 	Count      int      `json:"count"`
-}
-
-// Interest describes a topic that the member lists as a topic of 'interest' on their profile
-type Interest struct {
-	Name   string `json:"name"`
-	URLKey string `json:"urlkey"`
-	ID     int    `json:"id"`
 }
 
 // Members returns all of the members that belong to the specified meetup group
