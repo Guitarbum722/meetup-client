@@ -1,7 +1,7 @@
 package meetup
 
 import (
-	"github.com/briandowns/meetup-client/models"
+	"github.com/Guitarbum722/meetup-client/models"
 	"net/http"
 	"net/url"
 	"strconv"

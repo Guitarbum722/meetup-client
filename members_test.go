@@ -4,8 +4,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/briandowns/meetup-client/mocks"
-	"github.com/briandowns/meetup-client/models"
+	"github.com/Guitarbum722/meetup-client/mocks"
+	"github.com/Guitarbum722/meetup-client/models"
 	"github.com/stretchr/testify/mock"
 )
 
