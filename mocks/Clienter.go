@@ -2,7 +2,7 @@
 package mocks
 
 import (
-	"github.com/briandowns/meetup-client/models"
+	"github.com/Guitarbum722/meetup-client/models"
 	mock "github.com/stretchr/testify/mock"
 )
 
