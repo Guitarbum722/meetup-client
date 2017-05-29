@@ -1,67 +1,166 @@
 package meetup
 
 import (
+	"errors"
+	"testing"
+
 	"github.com/briandowns/meetup-client/mocks"
 	"github.com/briandowns/meetup-client/models"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"testing"
 )
 
 func TestMember(t *testing.T) {
-	cl := &mocks.Clienter{}
+	for _, tt := range byMemberCases {
+		cl := &mocks.Clienter{}
 
-	cl.On("Member", mock.AnythingOfType("int")).Return(&models.Member{
-		Name:   "John M.",
-		Status: "active",
-		ID:     78,
-	},
-		nil,
-	)
+		cl.On("Member", mock.AnythingOfType("int")).Return(&tt.member, tt.err)
 
-	got, err := cl.Member(78)
-	if err != nil {
-		t.Fatalf("test failed calling Member() : %s", err)
+		if got, err := cl.Member(tt.input); (err != nil) != tt.shouldFail {
+			t.Fatalf("Member(%d) = %d; want %v", tt.input, got.ID, tt.shouldFail)
+		}
 	}
-
-	assert.Equal(t, &models.Member{
-		Name:   "John M.",
-		Status: "active",
-		ID:     78,
-	},
-		got)
 }
 
 func TestMembers(t *testing.T) {
-	cl := &mocks.Clienter{}
-	cl.On("Members", mock.AnythingOfType("int")).Return(&models.Members{
-		Members: membersCases,
-	},
-		nil,
-	)
+	for _, tt := range memsByGroupCases {
+		cl := &mocks.Clienter{}
 
-	got, err := cl.Members(999)
-	if err != nil {
-		t.Fatalf("test failed calling Members() : %s", err)
+		cl.On("Members", mock.AnythingOfType("int")).Return(&tt.members, tt.err)
+
+		if got, err := cl.Members(tt.input); (err != nil) != tt.shouldFail {
+			t.Fatalf("Members(%d) = %v; want %v", tt.input, got.Members, tt.shouldFail)
+		}
 	}
-
-	assert.Equal(t, &models.Members{Members: membersCases}, got)
 }
 
-var membersCases = []models.Member{
+var byMemberCases = []struct {
+	input      int
+	member     models.Member
+	shouldFail bool
+	err        error
+}{
 	{
-		Name:   "Brian D.",
-		Status: "active",
-		ID:     88,
+		88,
+		models.Member{
+			Name:   "Brian D.",
+			Status: "active",
+			ID:     88,
+		},
+		false,
+		nil,
 	},
 	{
-		Name:   "P.S. Hoffman",
-		Status: "active",
-		ID:     99,
+		99,
+		models.Member{
+			Name:   "P.S. Hoffman",
+			Status: "active",
+			ID:     99,
+		},
+		false,
+		nil,
 	},
 	{
-		Name:   "John M",
-		Status: "active",
-		ID:     77,
+		68,
+		models.Member{
+			Name:   "John M",
+			Status: "active",
+			ID:     77,
+		},
+		true,
+		errors.New("fail - meetup service temporarily unavailable"),
+	},
+	{
+		77,
+		models.Member{
+			Name:   "Brian D.",
+			Status: "active",
+			ID:     88,
+		},
+		true,
+		errors.New("fail - invalid query"),
+	},
+}
+
+var memsByGroupCases = []struct {
+	input      int
+	members    models.Members
+	shouldFail bool
+	err        error
+}{
+	{
+		111,
+		models.Members{
+			Members: []models.Member{
+				{
+					Name:   "John M",
+					Status: "active",
+					ID:     77,
+				},
+				{
+					Name:   "P.S. Hoffman",
+					Status: "active",
+					ID:     99,
+				},
+			},
+		},
+		false,
+		nil,
+	},
+	{
+		222,
+		models.Members{
+			Members: []models.Member{
+				{
+					Name:   "K. J. Un",
+					Status: "active",
+					ID:     666,
+				},
+				{
+					Name:   "Bruce Wayne",
+					Status: "active",
+					ID:     777,
+				},
+			},
+		},
+		true,
+		errors.New("fail - invalid group number"),
+	},
+	{
+		1212,
+		models.Members{
+			Members: []models.Member{
+				{
+					Name:   "JJ Abrams",
+					Status: "active",
+					ID:     6767,
+				},
+				{
+					Name:   "Lucas Skywalker",
+					Status: "active",
+					ID:     45678,
+				},
+			},
+		},
+		true,
+		errors.New("fail - service temporarily unavailable"),
+	},
+	{
+		1234,
+		models.Members{
+			Members: []models.Member{
+				{
+					Name:   "Ben Kenobe",
+					Status: "active",
+					ID:     123456,
+				},
+				{
+					Name:   "Christopher Walken",
+					Status: "active",
+					ID:     1010,
+				},
+			},
+		},
+		false,
+		nil,
 	},
 }
