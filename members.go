@@ -19,7 +19,7 @@ func (c *Client) Members(groupID int) (*models.Members, error) {
 
 	v := url.Values{}
 	v.Set("group_id", strconv.Itoa(groupID))
-	v.Set("key", c.opts.APIKey)
+	v.Add("key", c.opts.APIKey)
 
 	uri := fmt.Sprintf("%s?%s", membersEndpoint, v.Encode())
 
