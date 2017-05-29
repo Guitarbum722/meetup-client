@@ -3,6 +3,7 @@ package meetup
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/briandowns/meetup-client/models"
 	"net/http"
 	"time"
 )
@@ -10,26 +11,35 @@ import (
 const baseURL = "https://api.meetup.com"
 
 // Clienter
-type Clienter interface{}
+type Clienter interface {
+	Members(groupID int) (*models.Members, error)
+	Member(memberID int) (*models.Member, error)
+}
+
+type ClientOpts struct {
+	APIKey string
+}
 
 // Client
 type Client struct {
-	hc *http.Client
+	hc   *http.Client
+	opts *ClientOpts
 }
 
 // NewClient ...
-func NewClient() Clienter {
+func NewClient(opts *ClientOpts) Clienter {
 	return &Client{
 		hc: &http.Client{
 			Timeout: time.Duration(time.Second * 20),
 		},
+		opts: opts,
 	}
 }
 
 // call
 func (c *Client) call(method, uri string, data *bytes.Buffer, result interface{}) error {
 	var req *http.Request
-	req.Header.Add("", "")
+	//req.Header.Add("", "")
 
 	var err error
 
