@@ -33,15 +33,15 @@ func (_m *Clienter) GroupByID(groupID int) (*models.Groups, error) {
 }
 
 // GroupByOrganizer provides a mock function with given fields: organizerID
-func (_m *Clienter) GroupByOrganizer(organizerID int) (*models.Group, error) {
+func (_m *Clienter) GroupByOrganizer(organizerID int) (*models.Groups, error) {
 	ret := _m.Called(organizerID)
 
-	var r0 *models.Group
-	if rf, ok := ret.Get(0).(func(int) *models.Group); ok {
+	var r0 *models.Groups
+	if rf, ok := ret.Get(0).(func(int) *models.Groups); ok {
 		r0 = rf(organizerID)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*models.Group)
+			r0 = ret.Get(0).(*models.Groups)
 		}
 	}
 
@@ -56,15 +56,15 @@ func (_m *Clienter) GroupByOrganizer(organizerID int) (*models.Group, error) {
 }
 
 // GroupByURLName provides a mock function with given fields: urlName
-func (_m *Clienter) GroupByURLName(urlName string) (*models.Group, error) {
+func (_m *Clienter) GroupByURLName(urlName string) (*models.Groups, error) {
 	ret := _m.Called(urlName)
 
-	var r0 *models.Group
-	if rf, ok := ret.Get(0).(func(string) *models.Group); ok {
+	var r0 *models.Groups
+	if rf, ok := ret.Get(0).(func(string) *models.Groups); ok {
 		r0 = rf(urlName)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*models.Group)
+			r0 = ret.Get(0).(*models.Groups)
 		}
 	}
 

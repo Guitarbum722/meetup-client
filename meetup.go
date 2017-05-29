@@ -15,8 +15,8 @@ type Clienter interface {
 	Members(groupID int) (*models.Members, error)
 	Member(memberID int) (*models.Member, error)
 	GroupByID(groupID int) (*models.Groups, error)
-	GroupByURLName(urlName string) (*models.Group, error)
-	GroupByOrganizer(organizerID int) (*models.Group, error)
+	GroupByURLName(urlName string) (*models.Groups, error)
+	GroupByOrganizer(organizerID int) (*models.Groups, error)
 }
 
 type ClientOpts struct {
