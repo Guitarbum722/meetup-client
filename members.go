@@ -13,24 +13,9 @@ const (
 	membersEndpoint = "/2/members"
 )
 
-// Member represents a Meetup group member
-type Member struct {
-	Name   string         `json:"name"`
-	Status string         `json:"status"`
-	ID     int            `json:"id"`
-	Topics []models.Topic `json:"topics"`
-}
-
-// Members wraps a slice of Member and also contains meta-fields from the meetup API response
-type Members struct {
-	Members    []Member `json:"results"`
-	TotalCount int      `json:"total_count"`
-	Count      int      `json:"count"`
-}
-
 // Members returns all of the members that belong to the specified meetup group
-func (c *Client) Members(groupID int) (*Members, error) {
-	var members Members
+func (c *Client) Members(groupID int) (*models.Members, error) {
+	var members models.Members
 
 	v := url.Values{}
 	v.Set("group_id", strconv.Itoa(groupID))
@@ -46,8 +31,8 @@ func (c *Client) Members(groupID int) (*Members, error) {
 }
 
 // Member returns the meetup profile data for a single member
-func (c *Client) Member(memberID int) (*Member, error) {
-	var member Member
+func (c *Client) Member(memberID int) (*models.Member, error) {
+	var member models.Member
 
 	v := url.Values{}
 	v.Set("key", c.opts.APIKey)

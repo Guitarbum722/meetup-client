@@ -1,8 +1,8 @@
-package meetup_test
+package meetup
 
 import (
-	"github.com/briandowns/meetup-client"
 	"github.com/briandowns/meetup-client/mocks"
+	"github.com/briandowns/meetup-client/models"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"testing"
@@ -11,7 +11,7 @@ import (
 func TestMember(t *testing.T) {
 	cl := &mocks.Clienter{}
 
-	cl.On("Member", mock.AnythingOfType("int")).Return(&meetup.Member{
+	cl.On("Member", mock.AnythingOfType("int")).Return(&models.Member{
 		Name:   "John M.",
 		Status: "active",
 		ID:     78,
@@ -24,7 +24,7 @@ func TestMember(t *testing.T) {
 		t.Fatalf("test failed calling Member() : %s", err)
 	}
 
-	assert.Equal(t, &meetup.Member{
+	assert.Equal(t, &models.Member{
 		Name:   "John M.",
 		Status: "active",
 		ID:     78,
@@ -34,7 +34,7 @@ func TestMember(t *testing.T) {
 
 func TestMembers(t *testing.T) {
 	cl := &mocks.Clienter{}
-	cl.On("Members", mock.AnythingOfType("int")).Return(&meetup.Members{
+	cl.On("Members", mock.AnythingOfType("int")).Return(&models.Members{
 		Members: membersCases,
 	},
 		nil,
@@ -45,10 +45,10 @@ func TestMembers(t *testing.T) {
 		t.Fatalf("test failed calling Members() : %s", err)
 	}
 
-	assert.Equal(t, &meetup.Members{Members: membersCases}, got)
+	assert.Equal(t, &models.Members{Members: membersCases}, got)
 }
 
-var membersCases = []meetup.Member{
+var membersCases = []models.Member{
 	{
 		Name:   "Brian D.",
 		Status: "active",

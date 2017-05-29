@@ -3,6 +3,7 @@ package meetup
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/briandowns/meetup-client/models"
 	"net/http"
 	"time"
 )
@@ -11,8 +12,8 @@ const baseURL = "https://api.meetup.com"
 
 // Clienter
 type Clienter interface {
-	Members(groupID int) (*Members, error)
-	Member(memberID int) (*Member, error)
+	Members(groupID int) (*models.Members, error)
+	Member(memberID int) (*models.Member, error)
 }
 
 type ClientOpts struct {
