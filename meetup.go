@@ -14,9 +14,9 @@ const baseURL = "https://api.meetup.com"
 type Clienter interface {
 	Members(groupID int) (*models.Members, error)
 	Member(memberID int) (*models.Member, error)
-	GroupByID(groupIDs ...int) (*models.Groups, error)
-	GroupByURLName(urlNames ...string) (*models.Groups, error)
-	GroupByOrganizer(organizerIDs ...int) (*models.Groups, error)
+	GroupByID(groupIDs []int) (*models.Groups, error)
+	GroupByURLName(urlNames []string) (*models.Groups, error)
+	GroupByOrganizer(organizerIDs []int) (*models.Groups, error)
 }
 
 type ClientOpts struct {
