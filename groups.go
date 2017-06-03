@@ -16,7 +16,7 @@ const (
 // GroupByID returns the data for a single meetup group using the specified groupID
 // The response contains an array of results, even if there is only one because the request can
 // consist of comma separated values as the group_id parameter.
-func (c *Client) GroupByID(groupIDs ...int) (*models.Groups, error) {
+func (c *Client) GroupByID(groupIDs []int) (*models.Groups, error) {
 	var groups models.Groups
 	var convIDs []string
 
@@ -40,7 +40,7 @@ func (c *Client) GroupByID(groupIDs ...int) (*models.Groups, error) {
 // GroupByURLName returns the data for a single meetup group using the specified urlName
 // The response contains an array of results, even if there is only one because the request can
 // consist of comma separated values as the group_id parameter.
-func (c *Client) GroupByURLName(urlNames ...string) (*models.Groups, error) {
+func (c *Client) GroupByURLName(urlNames []string) (*models.Groups, error) {
 	var groups models.Groups
 
 	v := url.Values{}
@@ -59,7 +59,7 @@ func (c *Client) GroupByURLName(urlNames ...string) (*models.Groups, error) {
 // GroupByOrganizer returns the data for a single meetup group using the specified organizerID
 // The response contains an array of results, even if there is only one because the request can
 // consist of comma separated values as the group_id parameter.
-func (c *Client) GroupByOrganizer(organizerIDs ...int) (*models.Groups, error) {
+func (c *Client) GroupByOrganizer(organizerIDs []int) (*models.Groups, error) {
 	var groups models.Groups
 	var convIDs []string
 
