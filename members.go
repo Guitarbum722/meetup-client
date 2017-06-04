@@ -3,7 +3,6 @@ package meetup
 import (
 	"github.com/Guitarbum722/meetup-client/models"
 	"net/http"
-	"net/url"
 	"strconv"
 )
 
@@ -17,9 +16,8 @@ const (
 func (c *Client) Members(groupID int) (*models.Members, error) {
 	var members models.Members
 
-	v := url.Values{}
-	v.Set("group_id", strconv.Itoa(groupID))
-	v.Add("key", c.opts.APIKey)
+	v := c.urlValues()
+	v.Add("group_id", strconv.Itoa(groupID))
 
 	// append 's' for /members
 	uri := memberEndpoint + "s" + queryStart + v.Encode()
@@ -35,8 +33,7 @@ func (c *Client) Members(groupID int) (*models.Members, error) {
 func (c *Client) Member(memberID int) (*models.Member, error) {
 	var member models.Member
 
-	v := url.Values{}
-	v.Set("key", c.opts.APIKey)
+	v := c.urlValues()
 
 	uri := memberEndpoint + fwdSlash + strconv.Itoa(memberID) + queryStart + v.Encode()
 

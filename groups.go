@@ -3,7 +3,6 @@ package meetup
 import (
 	"github.com/Guitarbum722/meetup-client/models"
 	"net/http"
-	"net/url"
 	"strconv"
 	"strings"
 )
@@ -22,8 +21,7 @@ func (c *Client) GroupByID(groupIDs []int) (*models.Groups, error) {
 		convIDs = append(convIDs, strconv.Itoa(id))
 	}
 
-	v := url.Values{}
-	v.Set("key", c.opts.APIKey)
+	v := c.urlValues()
 	v.Add("group_id", strings.Join(convIDs, ","))
 
 	uri := groupsEndpoint + queryStart + v.Encode()
@@ -41,8 +39,7 @@ func (c *Client) GroupByID(groupIDs []int) (*models.Groups, error) {
 // consist of comma separated values as the group_id parameter.
 func (c *Client) GroupByURLName(urlNames []string) (*models.Groups, error) {
 
-	v := url.Values{}
-	v.Set("key", c.opts.APIKey)
+	v := c.urlValues()
 	v.Add("group_urlname", strings.Join(urlNames, ","))
 
 	uri := groupsEndpoint + queryStart + v.Encode()
@@ -65,8 +62,7 @@ func (c *Client) GroupByOrganizer(organizerIDs []int) (*models.Groups, error) {
 		convIDs = append(convIDs, strconv.Itoa(id))
 	}
 
-	v := url.Values{}
-	v.Set("key", c.opts.APIKey)
+	v := c.urlValues()
 	v.Add("organizer_id", strings.Join(convIDs, ","))
 
 	uri := groupsEndpoint + queryStart + v.Encode()

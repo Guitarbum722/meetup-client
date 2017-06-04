@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"github.com/Guitarbum722/meetup-client/models"
 	"net/http"
+	"net/url"
 	"time"
 )
 
@@ -70,4 +71,11 @@ func (c *Client) call(method, uri string, data *bytes.Buffer, result interface{}
 	defer res.Body.Close()
 
 	return json.NewDecoder(res.Body).Decode(result)
+}
+
+// returns url.Values map with initialized API key
+func (c *Client) urlValues() url.Values {
+	v := url.Values{}
+	v.Set("key", c.opts.APIKey)
+	return v
 }
