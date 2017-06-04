@@ -1,7 +1,6 @@
 package meetup
 
 import (
-	"fmt"
 	"github.com/Guitarbum722/meetup-client/models"
 	"net/http"
 	"net/url"
@@ -27,7 +26,7 @@ func (c *Client) GroupByID(groupIDs []int) (*models.Groups, error) {
 	v.Set("key", c.opts.APIKey)
 	v.Add("group_id", strings.Join(convIDs, ","))
 
-	uri := fmt.Sprintf("%s?%s", groupsEndpoint, v.Encode())
+	uri := groupsEndpoint + queryStart + v.Encode()
 
 	var groups models.Groups
 	if err := c.call(http.MethodGet, uri, nil, &groups); err != nil {
