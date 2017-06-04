@@ -17,8 +17,7 @@ const (
 // The response contains an array of results, even if there is only one because the request can
 // consist of comma separated values as the group_id parameter.
 func (c *Client) GroupByID(groupIDs []int) (*models.Groups, error) {
-	var groups models.Groups
-	var convIDs []string
+	convIDs := make([]string, 0, len(groupIDs))
 
 	for _, id := range groupIDs {
 		convIDs = append(convIDs, strconv.Itoa(id))
@@ -30,6 +29,7 @@ func (c *Client) GroupByID(groupIDs []int) (*models.Groups, error) {
 
 	uri := fmt.Sprintf("%s?%s", groupsEndpoint, v.Encode())
 
+	var groups models.Groups
 	if err := c.call(http.MethodGet, uri, nil, &groups); err != nil {
 		return nil, err
 	}
@@ -41,7 +41,6 @@ func (c *Client) GroupByID(groupIDs []int) (*models.Groups, error) {
 // The response contains an array of results, even if there is only one because the request can
 // consist of comma separated values as the group_id parameter.
 func (c *Client) GroupByURLName(urlNames []string) (*models.Groups, error) {
-	var groups models.Groups
 
 	v := url.Values{}
 	v.Set("key", c.opts.APIKey)
@@ -49,6 +48,7 @@ func (c *Client) GroupByURLName(urlNames []string) (*models.Groups, error) {
 
 	uri := groupsEndpoint + queryStart + v.Encode()
 
+	var groups models.Groups
 	if err := c.call(http.MethodGet, uri, nil, &groups); err != nil {
 		return nil, err
 	}
@@ -60,8 +60,7 @@ func (c *Client) GroupByURLName(urlNames []string) (*models.Groups, error) {
 // The response contains an array of results, even if there is only one because the request can
 // consist of comma separated values as the group_id parameter.
 func (c *Client) GroupByOrganizer(organizerIDs []int) (*models.Groups, error) {
-	var groups models.Groups
-	var convIDs []string
+	convIDs := make([]string, 0, len(organizerIDs))
 
 	for _, id := range organizerIDs {
 		convIDs = append(convIDs, strconv.Itoa(id))
@@ -73,6 +72,7 @@ func (c *Client) GroupByOrganizer(organizerIDs []int) (*models.Groups, error) {
 
 	uri := groupsEndpoint + queryStart + v.Encode()
 
+	var groups models.Groups
 	if err := c.call(http.MethodGet, uri, nil, &groups); err != nil {
 		return nil, err
 	}
