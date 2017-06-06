@@ -45,6 +45,48 @@ func TestGroupByOrganizer(t *testing.T) {
 	}
 }
 
+func TestGroupByZip(t *testing.T) {
+	for _, tt := range byZipCases {
+		cl := &mocks.Clienter{}
+
+		cl.On("GroupByZip", mock.AnythingOfType("int")).Return(&tt.groups, tt.err)
+
+		if got, err := cl.GroupByZip(tt.input); (err != nil) != tt.shouldFail {
+			t.Fatalf("GroupByZip(%v) = %v; want %v", tt.input, got.Groups, tt.groups)
+		}
+	}
+}
+
+var byZipCases = []struct {
+	input      int
+	groups     models.Groups
+	shouldFail bool
+	err        error
+}{
+	{
+		85027,
+		models.Groups{
+			Groups: []models.Group{
+				{
+					Name:        "Golang Phoenix",
+					URLName:     "Golang-Phoenix",
+					ID:          123,
+					Link:        "https://www.meetup.com/Golang-Phoenix/",
+					MemberCount: 20,
+				},
+			},
+		},
+		false,
+		nil,
+	},
+	{
+		6,
+		models.Groups{},
+		true,
+		errors.New("fail - invalid zip"),
+	},
+}
+
 var byURLNameCases = []struct {
 	input      []string
 	groups     models.Groups
