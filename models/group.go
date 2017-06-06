@@ -7,6 +7,7 @@ type Group struct {
 	ID          int    `json:"id"`
 	Link        string `json:"link"`
 	MemberCount int    `json:"members"`
+	Organizer   Member `json:"organizer"`
 }
 
 // Groups wraps a slice of Group for unmarshalling the results array.
