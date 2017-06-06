@@ -78,6 +78,29 @@ func (_m *Clienter) GroupByURLName(urlNames []string) (*models.Groups, error) {
 	return r0, r1
 }
 
+// GroupByZip provides a mock function with given fields: zipCode
+func (_m *Clienter) GroupByZip(zipCode int) (*models.Groups, error) {
+	ret := _m.Called(zipCode)
+
+	var r0 *models.Groups
+	if rf, ok := ret.Get(0).(func(int) *models.Groups); ok {
+		r0 = rf(zipCode)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*models.Groups)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(int) error); ok {
+		r1 = rf(zipCode)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // Member provides a mock function with given fields: memberID
 func (_m *Clienter) Member(memberID int) (*models.Member, error) {
 	ret := _m.Called(memberID)
