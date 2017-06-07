@@ -3,10 +3,11 @@ package meetup
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/Guitarbum722/meetup-client/models"
 	"net/http"
 	"net/url"
 	"time"
+
+	"github.com/Guitarbum722/meetup-client/models"
 )
 
 const baseURL = "https://api.meetup.com"

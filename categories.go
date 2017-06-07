@@ -1,8 +1,9 @@
 package meetup
 
 import (
-	"github.com/Guitarbum722/meetup-client/models"
 	"net/http"
+
+	"github.com/Guitarbum722/meetup-client/models"
 )
 
 const categoriesEndpoint = "/2/categories"

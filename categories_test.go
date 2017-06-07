@@ -2,10 +2,10 @@ package meetup
 
 import (
 	"errors"
+	"testing"
+
 	"github.com/Guitarbum722/meetup-client/mocks"
 	"github.com/Guitarbum722/meetup-client/models"
-
-	"testing"
 )
 
 func TestCategories(t *testing.T) {
