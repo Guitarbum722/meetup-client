@@ -1,10 +1,11 @@
 package meetup
 
 import (
-	"github.com/Guitarbum722/meetup-client/models"
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/Guitarbum722/meetup-client/models"
 )
 
 const (

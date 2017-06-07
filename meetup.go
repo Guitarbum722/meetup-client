@@ -3,22 +3,24 @@ package meetup
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/Guitarbum722/meetup-client/models"
 	"net/http"
 	"net/url"
 	"time"
+
+	"github.com/Guitarbum722/meetup-client/models"
 )
 
 const baseURL = "https://api.meetup.com"
 
 // Clienter
 type Clienter interface {
-	Members(groupID int) (*models.Members, error)
-	Member(memberID int) (*models.Member, error)
-	GroupByID(groupIDs []int) (*models.Groups, error)
-	GroupByURLName(urlNames []string) (*models.Groups, error)
-	GroupByOrganizer(organizerIDs []int) (*models.Groups, error)
-	GroupByZip(zipCode int) (*models.Groups, error)
+	Members(int) (*models.Members, error)
+	Member(int) (*models.Member, error)
+	GroupByID([]int) (*models.Groups, error)
+	GroupByURLName([]string) (*models.Groups, error)
+	GroupByOrganizer([]int) (*models.Groups, error)
+	GroupByZip(int) (*models.Groups, error)
+	Categories() (*models.Categories, error)
 }
 
 type ClientOpts struct {

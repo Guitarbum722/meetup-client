@@ -1,14 +1,23 @@
 package meetup
 
-// Category
-type Category struct {
-	Name      string `json:"name"`
-	SortName  string `json:"sort_name"`
-	ID        int    `json:"id"`
-	ShortName string `json:"shortname"`
-}
+import (
+	"net/http"
 
-// Categories
-func (c *Client) Categories() ([]Category, error) {
-	return nil, nil
+	"github.com/Guitarbum722/meetup-client/models"
+)
+
+const categoriesEndpoint = "/2/categories"
+
+// Categories returns available meetup categories
+func (c *Client) Categories() (*models.Categories, error) {
+	v := c.urlValues()
+
+	uri := categoriesEndpoint + queryStart + v.Encode()
+
+	var categories models.Categories
+	if err := c.call(http.MethodGet, uri, nil, &categories); err != nil {
+		return nil, err
+	}
+
+	return &categories, nil
 }
