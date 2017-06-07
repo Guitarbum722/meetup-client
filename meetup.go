@@ -19,6 +19,7 @@ type Clienter interface {
 	GroupByURLName(urlNames []string) (*models.Groups, error)
 	GroupByOrganizer(organizerIDs []int) (*models.Groups, error)
 	GroupByZip(zipCode int) (*models.Groups, error)
+	Categories() (*models.Categories, error)
 }
 
 type ClientOpts struct {
