@@ -9,6 +9,29 @@ type Clienter struct {
 	mock.Mock
 }
 
+// Categories provides a mock function with given fields:
+func (_m *Clienter) Categories() (*models.Categories, error) {
+	ret := _m.Called()
+
+	var r0 *models.Categories
+	if rf, ok := ret.Get(0).(func() *models.Categories); ok {
+		r0 = rf()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*models.Categories)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func() error); ok {
+		r1 = rf()
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // GroupByID provides a mock function with given fields: groupIDs
 func (_m *Clienter) GroupByID(groupIDs []int) (*models.Groups, error) {
 	ret := _m.Called(groupIDs)
