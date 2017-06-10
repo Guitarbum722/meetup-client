@@ -1,6 +1,7 @@
 package meetup
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -9,15 +10,15 @@ import (
 )
 
 const (
-	findEventsEndpoint = "/find/events"
-	v3EventsEndpoint   = "/events"
-	v2EventsEndpoint   = "/2/events"
+	v3EventsEndpoint = "/events"
+	v2EventsEndpoint = "/2/events"
+	eventsConcierge  = "/2/concierge"
 )
 
 // EventsByGeo returns event data based on latitude, longitude and radius respectively.
-// Radius can be a value of 'smart', 'global', or in between 0 and 100
+// Radius can be a value of 'smart', or in between 0.5 and 100
 // If an empty string is passed for radius, then 'smart' will be used as a default
-func (c *Client) EventsByGeo(lat, lon, radius string) ([]models.Event, error) {
+func (c *Client) EventsByGeo(lat, lon, radius string) (*models.Events, error) {
 	v := c.urlValues()
 	if radius == "" {
 		radius = smartRadius
@@ -26,14 +27,14 @@ func (c *Client) EventsByGeo(lat, lon, radius string) ([]models.Event, error) {
 	v.Add("lon", lon)
 	v.Add("lat", lat)
 
-	uri := findEventsEndpoint + queryStart + v.Encode()
-
-	var events []models.Event
+	uri := eventsConcierge + queryStart + v.Encode()
+	fmt.Println(uri)
+	var events models.Events
 	if err := c.call(http.MethodGet, uri, nil, &events); err != nil {
 		return nil, err
 	}
 
-	return events, nil
+	return &events, nil
 }
 
 // EventsByGroup returns event data for the specified group with its urlName.

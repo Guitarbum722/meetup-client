@@ -9,6 +9,5 @@ const (
 	EventSuggested = "suggested"
 	EventUpcoming  = "upcoming"
 
-	smartRadius  = "smart"
-	globalRadius = "global"
+	smartRadius = "smart"
 )

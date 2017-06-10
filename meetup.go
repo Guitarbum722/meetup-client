@@ -21,7 +21,7 @@ type Clienter interface {
 	GroupByOrganizer([]int) (*models.Groups, error)
 	GroupByZip(int) (*models.Groups, error)
 	Categories() (*models.Categories, error)
-	EventsByGeo(string, string, string) ([]models.Event, error)
+	EventsByGeo(string, string, string) (*models.Events, error)
 	EventsByGroup(string, []string, bool) (*models.Events, error)
 	EventByID(string, string) (*models.Event, error)
 	EventsByGroupID(int, []string, bool) (*models.Events, error)
