@@ -11,6 +11,14 @@ type Event struct {
 	Venue    `json:"venue"`
 }
 
+// Events wraps a slice of Event for unmarshalling the results array.
+// It also contains meta fields from the response.
+type Events struct {
+	Events     []Event `json:"results"`
+	TotalCount int     `json:"total_count"`
+	Count      int     `json:"count"`
+}
+
 // Comment is a meetup event comment
 type Comment struct {
 }
