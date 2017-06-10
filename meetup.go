@@ -22,6 +22,7 @@ type Clienter interface {
 	GroupByZip(int) (*models.Groups, error)
 	Categories() (*models.Categories, error)
 	EventsByGeo(string, string, string) ([]models.Event, error)
+	EventsByGroup(string, []string, bool) ([]models.Event, error)
 }
 
 type ClientOpts struct {
