@@ -1,6 +1,6 @@
 package meetup
 
-// Valid status parameters for Meetup Events requests
+// Valid radius and event status values
 const (
 	EventCancelled = "cancelled"
 	EventDraft     = "draft"
@@ -8,4 +8,7 @@ const (
 	EventProposed  = "proposed"
 	EventSuggested = "suggested"
 	EventUpcoming  = "upcoming"
+
+	smartRadius  = "smart"
+	globalRadius = "global"
 )
