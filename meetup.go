@@ -21,6 +21,7 @@ type Clienter interface {
 	GroupByOrganizer([]int) (*models.Groups, error)
 	GroupByZip(int) (*models.Groups, error)
 	Categories() (*models.Categories, error)
+	EventsByGeo(string, string, string) ([]models.Event, error)
 }
 
 type ClientOpts struct {
