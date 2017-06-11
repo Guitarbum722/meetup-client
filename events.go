@@ -13,6 +13,14 @@ const (
 	v3EventsEndpoint = "/events"
 	v2EventsEndpoint = "/2/events"
 	eventsConcierge  = "/2/concierge"
+	EventCancelled   = "cancelled"
+	EventDraft       = "draft"
+	EventPast        = "past"
+	EventProposed    = "proposed"
+	EventSuggested   = "suggested"
+	EventUpcoming    = "upcoming"
+
+	smartRadius = "smart"
 )
 
 // EventsByGeo returns event data based on latitude, longitude and radius respectively.
