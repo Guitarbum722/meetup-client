@@ -1,7 +1,6 @@
 package meetup
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -36,7 +35,7 @@ func (c *Client) EventsByGeo(lat, lon, radius string) (*models.Events, error) {
 	v.Add("lat", lat)
 
 	uri := eventsConcierge + queryStart + v.Encode()
-	fmt.Println(uri)
+
 	var events models.Events
 	if err := c.call(http.MethodGet, uri, nil, &events); err != nil {
 		return nil, err
