@@ -7,8 +7,8 @@ type Event struct {
 	Link     string `json:"link"`
 	YesRSVP  int    `json:"yes_rsvp_count"`
 	Waitlist int    `json:"waitlist_count"`
-	Group    `json:"group"`
-	Venue    `json:"venue"`
+	Group    Group  `json:"group"`
+	Venue    Venue  `json:"venue"`
 }
 
 // Events wraps a slice of Event for unmarshalling the results array.
