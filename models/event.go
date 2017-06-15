@@ -21,6 +21,20 @@ type Events struct {
 
 // Comment is a meetup event comment
 type Comment struct {
+	MemberID    int    `json:"member_id"`
+	MemberName  string `json:"member_name"`
+	CommentID   int    `json:"event_comment_id"`
+	EventID     string `json:"event_id"`
+	GroupID     int    `json:"group_id"`
+	CommentText string `json:"comment"`
+}
+
+// Comments wraps a slice of Event for unmarshalling the results array.
+// It also contains meta fields from the response.
+type Comments struct {
+	Comments   []Comment `json:"results"`
+	TotalCount int       `json:"total_count"`
+	Count      int       `json:"count"`
 }
 
 // Venue ...
