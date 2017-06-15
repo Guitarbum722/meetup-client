@@ -25,6 +25,7 @@ type Clienter interface {
 	EventsByGroup(string, []string, bool) (*models.Events, error)
 	EventByID(string, string) (*models.Event, error)
 	EventsByGroupID(int, []string, bool) (*models.Events, error)
+	EventComments(*EventOpts) (*models.Comments, error)
 }
 
 type ClientOpts struct {
