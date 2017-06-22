@@ -45,11 +45,12 @@ type Venue struct {
 
 // Rating is submitted for a particular meetup event by a member
 type Rating struct {
-	MemberID   int    `json:"member_id"`
-	MemberName string `json:"member_name"`
-	EventID    string `json:"event_id"`
-	GroupID    int    `json:"group_id"`
-	Rating     int    `json:"rating"`
+	MemberID    int    `json:"member_id"`
+	MemberName  string `json:"member_name"`
+	EventID     string `json:"event_id"`
+	GroupID     int    `json:"group_id"`
+	Rating      int    `json:"rating"`
+	RatingCount int    `json:"rating_count"`
 }
 
 // Ratings wraps a slice of Rating for unmarshalling the results array.

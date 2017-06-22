@@ -1,6 +1,7 @@
 package meetup
 
 import (
+	"bytes"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -28,6 +29,7 @@ const (
 	MemberID
 	GroupID
 	EventID
+	Rating
 )
 
 // EventOptsType is used to configure Event and Comment based queries and updates
@@ -112,7 +114,7 @@ func (c *Client) EventByID(urlName, eventID string) (*models.Event, error) {
 // EventComments returns comments based on the query criteria provided with the EventOpts
 func (c *Client) EventComments(prep eopts, o map[EventOptsType][]string) (*models.Comments, error) {
 	v := c.urlValues()
-	v = prep(o, v)
+	prep(o, v)
 
 	uri := eventCommentEndpoint + "s" + queryStart + v.Encode()
 
@@ -152,4 +154,24 @@ func (c *Client) EventRatings(prep eopts, o map[EventOptsType][]string) (*models
 	}
 
 	return &ratings, nil
+}
+
+// RateEvent posts the provided rating to the specified eventID
+// Use EventID and Rating as options
+func (c *Client) RateEvent(prep eopts, o map[EventOptsType][]string) (*models.Rating, error) {
+	v := c.urlValues()
+
+	uri := ratingsEndpoint + queryStart + v.Encode()
+
+	form := url.Values{}
+	prep(o, form)
+
+	data := bytes.NewBuffer([]byte(form.Encode()))
+
+	var rating models.Rating
+	if err := c.call(http.MethodPost, uri, data, &rating); err != nil {
+		return nil, err
+	}
+
+	return &rating, nil
 }
