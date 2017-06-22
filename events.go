@@ -14,6 +14,7 @@ const (
 	v2EventsEndpoint     = "/2/events"
 	eventCommentEndpoint = "/2/event_comment"
 	eventsConcierge      = "/2/concierge"
+	ratingsEndpoint      = "/2/event_rating"
 	EventCancelled       = "cancelled"
 	EventDraft           = "draft"
 	EventPast            = "past"
@@ -121,4 +122,34 @@ func (c *Client) EventComments(prep eopts, o map[EventOptsType][]string) (*model
 	}
 
 	return &comments, nil
+}
+
+// EventCommentByID returns a single Comment using the provided comment id.
+func (c *Client) EventCommentByID(commentID int) (*models.Comment, error) {
+	v := c.urlValues()
+
+	uri := eventCommentEndpoint + fwdSlash + strconv.Itoa(commentID) + queryStart + v.Encode()
+
+	var comment models.Comment
+	if err := c.call(http.MethodGet, uri, nil, &comment); err != nil {
+		return nil, err
+	}
+
+	return &comment, nil
+}
+
+// EventRatings returns the ratings for the given eventID
+// options o is required to have at least an EventID and an optional MemberID
+func (c *Client) EventRatings(prep eopts, o map[EventOptsType][]string) (*models.Ratings, error) {
+	v := c.urlValues()
+	prep(o, v)
+
+	uri := ratingsEndpoint + "s" + queryStart + v.Encode()
+
+	var ratings models.Ratings
+	if err := c.call(http.MethodGet, uri, nil, &ratings); err != nil {
+		return nil, err
+	}
+
+	return &ratings, nil
 }
