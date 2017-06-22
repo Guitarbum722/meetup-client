@@ -25,17 +25,15 @@ const (
 
 	smartRadius = "smart"
 
-	CommentID EventOptsType = iota
-	MemberID
-	GroupID
-	EventID
-	Rating
+	CommentID    = "comment_id"
+	MemberID     = "member_id"
+	GroupID      = "group_id"
+	EventID      = "event_id"
+	Rating       = "rating"
+	GroupURLName = "group_urlname"
 )
 
-// EventOptsType is used to configure Event and Comment based queries and updates
-type EventOptsType byte
-
-type eopts func(map[EventOptsType][]string, url.Values) url.Values
+type eopts func(map[string][]string, url.Values) url.Values
 
 // EventsByGeo returns event data based on latitude, longitude and radius respectively.
 // Radius can be a value of 'smart', or in between 0.5 and 100
@@ -112,7 +110,7 @@ func (c *Client) EventByID(urlName, eventID string) (*models.Event, error) {
 }
 
 // EventComments returns comments based on the query criteria provided with the EventOpts
-func (c *Client) EventComments(prep eopts, o map[EventOptsType][]string) (*models.Comments, error) {
+func (c *Client) EventComments(prep eopts, o map[string][]string) (*models.Comments, error) {
 	v := c.urlValues()
 	prep(o, v)
 
@@ -142,7 +140,7 @@ func (c *Client) EventCommentByID(commentID int) (*models.Comment, error) {
 
 // EventRatings returns the ratings for the given eventID
 // options o is required to have at least an EventID and an optional MemberID
-func (c *Client) EventRatings(prep eopts, o map[EventOptsType][]string) (*models.Ratings, error) {
+func (c *Client) EventRatings(prep eopts, o map[string][]string) (*models.Ratings, error) {
 	v := c.urlValues()
 	prep(o, v)
 
@@ -158,7 +156,7 @@ func (c *Client) EventRatings(prep eopts, o map[EventOptsType][]string) (*models
 
 // RateEvent posts the provided rating to the specified eventID
 // Use EventID and Rating as options
-func (c *Client) RateEvent(prep eopts, o map[EventOptsType][]string) (*models.Rating, error) {
+func (c *Client) RateEvent(prep eopts, o map[string][]string) (*models.Rating, error) {
 	v := c.urlValues()
 
 	uri := ratingsEndpoint + queryStart + v.Encode()

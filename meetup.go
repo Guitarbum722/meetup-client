@@ -25,10 +25,10 @@ type Clienter interface {
 	EventsByGroup(string, []string, bool) (*models.Events, error)
 	EventByID(string, string) (*models.Event, error)
 	EventsByGroupID(int, []string, bool) (*models.Events, error)
-	EventComments(eopts, map[EventOptsType][]string) (*models.Comments, error)
+	EventComments(eopts, map[string][]string) (*models.Comments, error)
 	EventCommentByID(int) (*models.Comment, error)
-	EventRatings(eopts, map[EventOptsType][]string) (*models.Ratings, error)
-	RateEvent(eopts, map[EventOptsType][]string) (*models.Rating, error)
+	EventRatings(eopts, map[string][]string) (*models.Ratings, error)
+	RateEvent(eopts, map[string][]string) (*models.Rating, error)
 }
 
 type ClientOpts struct {
