@@ -33,7 +33,7 @@ const (
 	GroupURLName = "group_urlname"
 )
 
-type eopts func(map[string][]string, url.Values) url.Values
+type eopts func(map[string][]string, url.Values)
 
 // EventsByGeo returns event data based on latitude, longitude and radius respectively.
 // Radius can be a value of 'smart', or in between 0.5 and 100
