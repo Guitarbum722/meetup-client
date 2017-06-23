@@ -26,6 +26,8 @@ const (
 	smartRadius = "smart"
 
 	CommentID    = "comment_id"
+	CommentText  = "comment"
+	InReplyTo    = "in_reply_to"
 	MemberID     = "member_id"
 	GroupID      = "group_id"
 	EventID      = "event_id"
@@ -164,7 +166,7 @@ func (c *Client) RateEvent(prep eopts, o map[string][]string) (*models.Rating, e
 	form := url.Values{}
 	prep(o, form)
 
-	data := bytes.NewBuffer([]byte(form.Encode()))
+	data := bytes.NewBufferString(form.Encode())
 
 	var rating models.Rating
 	if err := c.call(http.MethodPost, uri, data, &rating); err != nil {
@@ -172,4 +174,65 @@ func (c *Client) RateEvent(prep eopts, o map[string][]string) (*models.Rating, e
 	}
 
 	return &rating, nil
+}
+
+// CommentOnEvent posts a comment to the specified event
+// Required event options are EventID and CommentText
+// Optionally, use InReplyTo to specify the comment ID in which to reply to
+func (c *Client) CommentOnEvent(prep eopts, o map[string][]string) (*models.Comment, error) {
+	v := c.urlValues()
+
+	uri := eventCommentEndpoint + queryStart + v.Encode()
+
+	form := url.Values{}
+	prep(o, form)
+
+	data := bytes.NewBufferString(form.Encode())
+
+	var comment models.Comment
+	if err := c.call(http.MethodPost, uri, data, &comment); err != nil {
+		return nil, err
+	}
+	return &comment, nil
+}
+
+// LikeComment uses the specified commentID to 'like' it.
+func (c *Client) LikeComment(commentID int) error {
+	v := c.urlValues()
+
+	uri := eventCommentEndpoint + "_like" + fwdSlash + strconv.Itoa(commentID) + queryStart + v.Encode()
+
+	var res interface{}
+	if err := c.call(http.MethodPost, uri, &bytes.Buffer{}, &res); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// UnlikeComment will remove a previously posted 'like' on the specified commentID
+func (c *Client) UnlikeComment(commentID int) error {
+	v := c.urlValues()
+
+	uri := eventCommentEndpoint + "_like" + fwdSlash + strconv.Itoa(commentID) + queryStart + v.Encode()
+
+	var res interface{}
+	if err := c.call(http.MethodDelete, uri, &bytes.Buffer{}, &res); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// CreateEvent posts a new event for the given group
+// EventOpts required are GroupID, GroupURLName and Name (name of the event)
+func (c *Client) CreateEvent(prep eopts, o map[string][]string) (*models.Event, error) {
+
+	return nil, nil
+}
+
+// UpdateEvent modifies an existing event
+// Required EventOpts are EventID
+func (c *Client) UpdateEvent(prep eopts, o map[string][]string) (*models.Event, error) {
+	return nil, nil
 }

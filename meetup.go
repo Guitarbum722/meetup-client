@@ -29,6 +29,9 @@ type Clienter interface {
 	EventCommentByID(int) (*models.Comment, error)
 	EventRatings(eopts, map[string][]string) (*models.Ratings, error)
 	RateEvent(eopts, map[string][]string) (*models.Rating, error)
+	CommentOnEvent(eopts, map[string][]string) (*models.Comment, error)
+	LikeComment(int) error
+	UnlikeComment(int) error
 }
 
 type ClientOpts struct {
@@ -69,6 +72,11 @@ func (c *Client) call(method, uri string, data *bytes.Buffer, result interface{}
 	case http.MethodPost:
 		req, err = http.NewRequest(method, endpoint, data)
 		req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+		if err != nil {
+			return err
+		}
+	case http.MethodDelete:
+		req, err = http.NewRequest(method, endpoint, nil)
 		if err != nil {
 			return err
 		}
