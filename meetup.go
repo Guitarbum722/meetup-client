@@ -32,6 +32,10 @@ type Clienter interface {
 	CommentOnEvent(eopts, map[string][]string) (*models.Comment, error)
 	LikeComment(int) error
 	UnlikeComment(int) error
+	RemoveEventComment(int) error
+	CreateEvent(eopts, map[string][]string) (*models.Event, error)
+	UpdateEvent(string, eopts, map[string][]string) (*models.Event, error)
+	DeleteEvent(string) error
 }
 
 type ClientOpts struct {

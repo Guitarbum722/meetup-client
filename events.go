@@ -12,6 +12,7 @@ import (
 
 const (
 	v3EventsEndpoint     = "/events"
+	v2EventEndpoint      = "/2/event"
 	v2EventsEndpoint     = "/2/events"
 	eventCommentEndpoint = "/2/event_comment"
 	eventsConcierge      = "/2/concierge"
@@ -25,14 +26,18 @@ const (
 
 	smartRadius = "smart"
 
-	CommentID    = "comment_id"
-	CommentText  = "comment"
-	InReplyTo    = "in_reply_to"
-	MemberID     = "member_id"
-	GroupID      = "group_id"
-	EventID      = "event_id"
-	Rating       = "rating"
-	GroupURLName = "group_urlname"
+	CommentID     = "comment_id"
+	CommentText   = "comment"
+	InReplyTo     = "in_reply_to"
+	MemberID      = "member_id"
+	GroupID       = "group_id"
+	EventID       = "event_id"
+	EventName     = "name"
+	Rating        = "rating"
+	GroupURLName  = "group_urlname"
+	Description   = "description"
+	PublishStatus = "publish_status"
+	EventTime     = "time"
 )
 
 type eopts func(map[string][]string, url.Values)
@@ -196,6 +201,20 @@ func (c *Client) CommentOnEvent(prep eopts, o map[string][]string) (*models.Comm
 	return &comment, nil
 }
 
+// RemoveEventComment deletes a previously posted comment with the provided commentID
+func (c *Client) RemoveEventComment(commentID int) error {
+	v := c.urlValues()
+
+	uri := eventCommentEndpoint + fwdSlash + strconv.Itoa(commentID) + queryStart + v.Encode()
+
+	var res interface{}
+	if err := c.call(http.MethodDelete, uri, &bytes.Buffer{}, &res); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // LikeComment uses the specified commentID to 'like' it.
 func (c *Client) LikeComment(commentID int) error {
 	v := c.urlValues()
@@ -226,13 +245,53 @@ func (c *Client) UnlikeComment(commentID int) error {
 
 // CreateEvent posts a new event for the given group
 // EventOpts required are GroupID, GroupURLName and Name (name of the event)
+// Optional Event Opts supported by this lib include Description, PublishStatus (organizer only)
+// You can set more options with the passed eopts func and map parameters to this method (see Meetup API docs for a full list)
 func (c *Client) CreateEvent(prep eopts, o map[string][]string) (*models.Event, error) {
+	v := c.urlValues()
 
-	return nil, nil
+	uri := v2EventEndpoint + queryStart + v.Encode()
+
+	form := url.Values{}
+	prep(o, form)
+
+	data := bytes.NewBufferString(form.Encode())
+
+	var event models.Event
+	if err := c.call(http.MethodPost, uri, data, &event); err != nil {
+		return nil, err
+	}
+	return &event, nil
 }
 
 // UpdateEvent modifies an existing event
-// Required EventOpts are EventID
-func (c *Client) UpdateEvent(prep eopts, o map[string][]string) (*models.Event, error) {
-	return nil, nil
+func (c *Client) UpdateEvent(eventID string, prep eopts, o map[string][]string) (*models.Event, error) {
+	v := c.urlValues()
+
+	uri := v2EventEndpoint + fwdSlash + eventID + queryStart + v.Encode()
+
+	form := url.Values{}
+	prep(o, form)
+
+	data := bytes.NewBufferString(form.Encode())
+
+	var event models.Event
+	if err := c.call(http.MethodPost, uri, data, &event); err != nil {
+		return nil, err
+	}
+	return &event, nil
+}
+
+// DeleteEvent removes a previously posted event with the given eventID
+func (c *Client) DeleteEvent(eventID string) error {
+	v := c.urlValues()
+
+	uri := v2EventEndpoint + fwdSlash + eventID + queryStart + v.Encode()
+
+	var res interface{}
+	if err := c.call(http.MethodDelete, uri, &bytes.Buffer{}, &res); err != nil {
+		return err
+	}
+
+	return nil
 }
