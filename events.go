@@ -17,15 +17,12 @@ const (
 	eventCommentEndpoint = "/2/event_comment"
 	eventsConcierge      = "/2/concierge"
 	ratingsEndpoint      = "/2/event_rating"
-	EventCancelled       = "cancelled"
-	EventDraft           = "draft"
-	EventPast            = "past"
-	EventProposed        = "proposed"
-	EventSuggested       = "suggested"
-	EventUpcoming        = "upcoming"
+	smartRadius          = "smart"
+)
 
-	smartRadius = "smart"
-
+// Commonly used query param or form field names.  These can be used as the options passed to your eopts func
+// and the keys in the map the configures the options.
+const (
 	CommentID     = "comment_id"
 	CommentText   = "comment"
 	InReplyTo     = "in_reply_to"
