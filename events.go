@@ -249,9 +249,9 @@ func (c *Client) UnlikeComment(commentID int) error {
 }
 
 // CreateEvent posts a new event for the given group
-// EventOpts required are GroupID, GroupURLName and Name (name of the event)
+// EventOpts required are GroupID, GroupURLName and EventName (name of the event)
 // Optional Event Opts supported by this lib include Description, PublishStatus (organizer only)
-// You can set more options with the passed eopts func and map parameters to this method (see Meetup API docs for a full list)
+// You can set more options with the passed prep func and map parameters to this method (see Meetup API docs for a full list)
 func (c *Client) CreateEvent(prep func(map[string][]string, url.Values), o map[string][]string) (*models.Event, error) {
 	v := c.urlValues()
 
