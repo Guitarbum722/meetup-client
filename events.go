@@ -17,15 +17,12 @@ const (
 	eventCommentEndpoint = "/2/event_comment"
 	eventsConcierge      = "/2/concierge"
 	ratingsEndpoint      = "/2/event_rating"
-	EventCancelled       = "cancelled"
-	EventDraft           = "draft"
-	EventPast            = "past"
-	EventProposed        = "proposed"
-	EventSuggested       = "suggested"
-	EventUpcoming        = "upcoming"
+	smartRadius          = "smart"
+)
 
-	smartRadius = "smart"
-
+// Commonly used query param or form field names.  These can be used as the options passed to your eopts func
+// and the keys in the map the configures the options.
+const (
 	CommentID     = "comment_id"
 	CommentText   = "comment"
 	InReplyTo     = "in_reply_to"
@@ -40,7 +37,15 @@ const (
 	EventTime     = "time"
 )
 
-type eopts func(map[string][]string, url.Values)
+// Status types to be used in Event queries
+const (
+	EventCancelled = "cancelled"
+	EventDraft     = "draft"
+	EventPast      = "past"
+	EventProposed  = "proposed"
+	EventSuggested = "suggested"
+	EventUpcoming  = "upcoming"
+)
 
 // EventsByGeo returns event data based on latitude, longitude and radius respectively.
 // Radius can be a value of 'smart', or in between 0.5 and 100
@@ -117,7 +122,7 @@ func (c *Client) EventByID(urlName, eventID string) (*models.Event, error) {
 }
 
 // EventComments returns comments based on the query criteria provided with the EventOpts
-func (c *Client) EventComments(prep eopts, o map[string][]string) (*models.Comments, error) {
+func (c *Client) EventComments(prep func(map[string][]string, url.Values), o map[string][]string) (*models.Comments, error) {
 	v := c.urlValues()
 	prep(o, v)
 
@@ -147,7 +152,7 @@ func (c *Client) EventCommentByID(commentID int) (*models.Comment, error) {
 
 // EventRatings returns the ratings for the given eventID
 // options o is required to have at least an EventID and an optional MemberID
-func (c *Client) EventRatings(prep eopts, o map[string][]string) (*models.Ratings, error) {
+func (c *Client) EventRatings(prep func(map[string][]string, url.Values), o map[string][]string) (*models.Ratings, error) {
 	v := c.urlValues()
 	prep(o, v)
 
@@ -163,7 +168,7 @@ func (c *Client) EventRatings(prep eopts, o map[string][]string) (*models.Rating
 
 // RateEvent posts the provided rating to the specified eventID
 // Use EventID and Rating as options
-func (c *Client) RateEvent(prep eopts, o map[string][]string) (*models.Rating, error) {
+func (c *Client) RateEvent(prep func(map[string][]string, url.Values), o map[string][]string) (*models.Rating, error) {
 	v := c.urlValues()
 
 	uri := ratingsEndpoint + queryStart + v.Encode()
@@ -184,7 +189,7 @@ func (c *Client) RateEvent(prep eopts, o map[string][]string) (*models.Rating, e
 // CommentOnEvent posts a comment to the specified event
 // Required event options are EventID and CommentText
 // Optionally, use InReplyTo to specify the comment ID in which to reply to
-func (c *Client) CommentOnEvent(prep eopts, o map[string][]string) (*models.Comment, error) {
+func (c *Client) CommentOnEvent(prep func(map[string][]string, url.Values), o map[string][]string) (*models.Comment, error) {
 	v := c.urlValues()
 
 	uri := eventCommentEndpoint + queryStart + v.Encode()
@@ -247,7 +252,7 @@ func (c *Client) UnlikeComment(commentID int) error {
 // EventOpts required are GroupID, GroupURLName and Name (name of the event)
 // Optional Event Opts supported by this lib include Description, PublishStatus (organizer only)
 // You can set more options with the passed eopts func and map parameters to this method (see Meetup API docs for a full list)
-func (c *Client) CreateEvent(prep eopts, o map[string][]string) (*models.Event, error) {
+func (c *Client) CreateEvent(prep func(map[string][]string, url.Values), o map[string][]string) (*models.Event, error) {
 	v := c.urlValues()
 
 	uri := v2EventEndpoint + queryStart + v.Encode()
@@ -265,7 +270,7 @@ func (c *Client) CreateEvent(prep eopts, o map[string][]string) (*models.Event, 
 }
 
 // UpdateEvent modifies an existing event
-func (c *Client) UpdateEvent(eventID string, prep eopts, o map[string][]string) (*models.Event, error) {
+func (c *Client) UpdateEvent(eventID string, prep func(map[string][]string, url.Values), o map[string][]string) (*models.Event, error) {
 	v := c.urlValues()
 
 	uri := v2EventEndpoint + fwdSlash + eventID + queryStart + v.Encode()

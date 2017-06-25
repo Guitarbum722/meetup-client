@@ -25,16 +25,16 @@ type Clienter interface {
 	EventsByGroup(string, []string, bool) (*models.Events, error)
 	EventByID(string, string) (*models.Event, error)
 	EventsByGroupID(int, []string, bool) (*models.Events, error)
-	EventComments(eopts, map[string][]string) (*models.Comments, error)
+	EventComments(func(map[string][]string, url.Values), map[string][]string) (*models.Comments, error)
 	EventCommentByID(int) (*models.Comment, error)
-	EventRatings(eopts, map[string][]string) (*models.Ratings, error)
-	RateEvent(eopts, map[string][]string) (*models.Rating, error)
-	CommentOnEvent(eopts, map[string][]string) (*models.Comment, error)
+	EventRatings(func(map[string][]string, url.Values), map[string][]string) (*models.Ratings, error)
+	RateEvent(func(map[string][]string, url.Values), map[string][]string) (*models.Rating, error)
+	CommentOnEvent(func(map[string][]string, url.Values), map[string][]string) (*models.Comment, error)
 	LikeComment(int) error
 	UnlikeComment(int) error
 	RemoveEventComment(int) error
-	CreateEvent(eopts, map[string][]string) (*models.Event, error)
-	UpdateEvent(string, eopts, map[string][]string) (*models.Event, error)
+	CreateEvent(func(map[string][]string, url.Values), map[string][]string) (*models.Event, error)
+	UpdateEvent(string, func(map[string][]string, url.Values), map[string][]string) (*models.Event, error)
 	DeleteEvent(string) error
 }
 
