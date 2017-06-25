@@ -25,6 +25,17 @@ type Clienter interface {
 	EventsByGroup(string, []string, bool) (*models.Events, error)
 	EventByID(string, string) (*models.Event, error)
 	EventsByGroupID(int, []string, bool) (*models.Events, error)
+	EventComments(func(map[string][]string, url.Values), map[string][]string) (*models.Comments, error)
+	EventCommentByID(int) (*models.Comment, error)
+	EventRatings(func(map[string][]string, url.Values), map[string][]string) (*models.Ratings, error)
+	RateEvent(func(map[string][]string, url.Values), map[string][]string) (*models.Rating, error)
+	CommentOnEvent(func(map[string][]string, url.Values), map[string][]string) (*models.Comment, error)
+	LikeComment(int) error
+	UnlikeComment(int) error
+	RemoveEventComment(int) error
+	CreateEvent(func(map[string][]string, url.Values), map[string][]string) (*models.Event, error)
+	UpdateEvent(string, func(map[string][]string, url.Values), map[string][]string) (*models.Event, error)
+	DeleteEvent(string) error
 }
 
 type ClientOpts struct {
@@ -50,7 +61,6 @@ func NewClient(opts *ClientOpts) Clienter {
 // call
 func (c *Client) call(method, uri string, data *bytes.Buffer, result interface{}) error {
 	var req *http.Request
-	//req.Header.Add("", "")
 
 	var err error
 
@@ -65,6 +75,12 @@ func (c *Client) call(method, uri string, data *bytes.Buffer, result interface{}
 
 	case http.MethodPost:
 		req, err = http.NewRequest(method, endpoint, data)
+		req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+		if err != nil {
+			return err
+		}
+	case http.MethodDelete:
+		req, err = http.NewRequest(method, endpoint, nil)
 		if err != nil {
 			return err
 		}
