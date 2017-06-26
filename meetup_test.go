@@ -5,6 +5,8 @@ import (
 	"testing"
 )
 
+const apiKey = "asdfasdf12341234"
+
 // validateClientType
 func validateClientType(c Clienter) bool {
 	if _, ok := c.(*Client); !ok {
@@ -12,8 +14,6 @@ func validateClientType(c Clienter) bool {
 	}
 	return true
 }
-
-const apiKey = "asdfasdf12341234"
 
 // TestNewClient
 func TestNewClient(t *testing.T) {
