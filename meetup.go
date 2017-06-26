@@ -38,18 +38,27 @@ type Clienter interface {
 	DeleteEvent(string) error
 }
 
+// ClientOpts contains options to be passed in when creating a new
+// meetup client value
 type ClientOpts struct {
-	APIKey string
+	APIKey     string
+	HTTPClient *http.Client
 }
 
-// Client
+// Client represents a meetup client
 type Client struct {
 	hc   *http.Client
 	opts *ClientOpts
 }
 
-// NewClient ...
+// NewClient creates a new Meetup client with the given parameters
 func NewClient(opts *ClientOpts) Clienter {
+	if opts.HTTPClient != nil {
+		return &Client{
+			hc:   opts.HTTPClient,
+			opts: opts,
+		}
+	}
 	return &Client{
 		hc: &http.Client{
 			Timeout: time.Duration(time.Second * 20),
@@ -58,7 +67,7 @@ func NewClient(opts *ClientOpts) Clienter {
 	}
 }
 
-// call
+// call acts as a broker for the packages HTTP requests to the meetup.com API
 func (c *Client) call(method, uri string, data *bytes.Buffer, result interface{}) error {
 	var req *http.Request
 
