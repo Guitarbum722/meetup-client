@@ -1,8 +1,8 @@
 build:
-	go build -v ./...
+	go build -v .
 
 test:
-	go test -v ./...
+	go test -v .
 
 generate-mocks:
 	mockery -dir=./ -all
